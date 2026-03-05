@@ -1,0 +1,9 @@
+---
+title: "Group_14_Analysis"
+format: html
+editor: visual
+---
+
+```{r}
+data <- read.csv("DAProject14.csv")
+```
