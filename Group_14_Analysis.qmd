@@ -2,6 +2,10 @@
 title: "Group_14_Analysis"
 format: html
 editor: visual
+execute: 
+  eval: true
+  echo: true
+  warning: false
 ---
 
 ```{r}
@@ -9,3 +13,13 @@ data <- read.csv("DAProject14.csv")
 ```
 
 # Introduction
+
+We are using a data set on measles susceptibility in pre-school children within 101 intermediate zones (IZ) from Edinburgh. The IZ have on average 4,000 residents and the data is from 1998-2014.
+
+We have two main questions of interest, including, did the retraction of the Wakefield article exhibit any change in measles susceptibility in Edinburgh. Also did the change, if there was any, occur in 2004 alongside the article's retraction.
+
+# Exploratory Analysis
+
+# Formal Analysis
+
+# Conclusions
