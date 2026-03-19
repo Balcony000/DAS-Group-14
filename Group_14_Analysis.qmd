@@ -2,8 +2,51 @@
 title: "Group_14_Analysis"
 format: html
 editor: visual
+execute: 
+  eval: true
+  echo: false
+  warning: false
 ---
 
 ```{r}
 data <- read.csv("DAProject14.csv")
 ```
+
+# Introduction
+
+We are using a data set on measles susceptibility in pre-school children within 101 intermediate zones (IZ) from Edinburgh. The IZ have on average 4,000 residents and the data is from 1998-2014.
+
+We have two main questions of interest, including, did the retraction of the Wakefield article exhibit any change in measles susceptibility in Edinburgh. Also did the change, if there was any, occur in 2004 alongside the article's retraction.
+
+# Exploratory Analysis
+
+```{r}
+#| warning: false
+#| message: false
+
+library(ggplot2)
+
+```
+
+```{r}
+#| fig-cap: "Average Proprotion of Measle Susceptibility against Year"
+#| label: fig-plot
+
+data$prop <- data$Y / data$N
+yearly_avg <- aggregate(prop ~ Year, data = data, FUN = mean)
+
+ggplot(yearly_avg, aes(x = Year, y = prop)) + 
+  geom_point(size = 2, color = "blue") + 
+  geom_line(color = "blue") + 
+  geom_vline(xintercept = 2004, linetype = "dashed", color = "red") + 
+  labs(x = "Year", y = "Average proprtion suscepitible") + 
+  theme_minimal()
+
+
+```
+
+@fig-plot shows the proportion of the average measles susceptibility across all IZ for each year, we can see a large decrease in 2004 when the Wakefield article was retracted. After 2004 we see an exponential decrease in the average proportion of measles susceptibility untill out latest time point in 2014. 2004 had the largest value at 0.175 but we see this decrease each time period to eventually being just above 0.075 in 2014.
+
+# Formal Analysis
+
+# Conclusions
