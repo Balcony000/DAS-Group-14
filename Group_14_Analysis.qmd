@@ -14,11 +14,17 @@ data <- read.csv("DAProject14.csv")
 
 # Introduction
 
-We are using a data set on measles susceptibility in pre-school children within 101 intermediate zones (IZ) from Edinburgh. The IZ have on average 4,000 residents and the data is from 1998-2014.
+Measles is highly infectious and are easily spread throughout communities, vaccinations are key to limit the spread of measles. Population susceptibility is a key indicator of outbreak risks. In this study, the proportion of pre-school children who are susceptible to measles is analysed across intermediate zones.
+
+Our data set consists of 101 intermediate zones (IZ) from Edinburgh. The IZ have on average 4,000 residents and the data is from 1998-2014. The data set also includes the number of pre-school children susceptible to measles in a given IZ and the total number of pre-schooled children in a given IZ.
+
+Public concern regarding the measles, mumps and rubella (MMR) vaccine increased following the claims with links to autism, most notably in the Wakefield study. These claims were later dismissed and the Wakefield article was retracted in 2004.
 
 We have two main questions of interest, including, did the retraction of the Wakefield article exhibit any change in measles susceptibility in Edinburgh. Also did the change, if there was any, occur in 2004 alongside the article's retraction.
 
 # Exploratory Analysis
+
+In the exploratory analysis we will put the data into two groups, pre-2004 and post-2004, this allows for an initial assessment of the impact of the retraction of the Wakefield article on measles susceptibility across IZ.
 
 ```{r}
 #| warning: false
@@ -31,7 +37,9 @@ library(ggplot2)
 ```{r}
 #| fig-cap: "Average Proprotion of Measle Susceptibility against Year"
 #| label: fig-plot
+#| out-width: "80%"
 
+data <- read.csv("DAProject14.csv")
 data$prop <- data$Y / data$N
 yearly_avg <- aggregate(prop ~ Year, data = data, FUN = mean)
 
@@ -39,13 +47,31 @@ ggplot(yearly_avg, aes(x = Year, y = prop)) +
   geom_point(size = 2, color = "blue") + 
   geom_line(color = "blue") + 
   geom_vline(xintercept = 2004, linetype = "dashed", color = "red") + 
-  labs(x = "Year", y = "Average proprtion suscepitible") + 
+  labs(x = "Year", y = "Proportion Susceptible to Measles") + 
   theme_minimal()
 
 
 ```
 
 @fig-plot shows the proportion of the average measles susceptibility across all IZ for each year, we can see a large decrease in 2004 when the Wakefield article was retracted. After 2004 we see an exponential decrease in the average proportion of measles susceptibility untill out latest time point in 2014. 2004 had the largest value at 0.175 but we see this decrease each time period to eventually being just above 0.075 in 2014.
+
+```{r}
+#| fig-cap: "Boxplots for average measle susceptibility post and pre wakefield articlr retraction"
+#| label: fig-boxplot
+#| out-width: "80%"
+
+data$period <- ifelse(data$Year > 2004 ,"Post-Wakefield Retraction", "Pre-Wakefield Retraction")
+
+data$prop <- data$Y / data$N
+
+ggplot(data, aes(x = period, y = prop, fill = period)) + 
+  geom_boxplot() + 
+  scale_fill_manual(values = c("blue","red")) + 
+  labs(x = "Period of Time",
+       y = "Proportion Susceptible to Measles")
+```
+
+In @fig-boxplot we observe a clear change in average measles susceptibility between the two groups. Following 2004, the median susceptibility appears lower compared to the pre 2004 period, suggesting a decrease after the retraction of the Wakefield article. Variability appears similar between both groups whilst both groups appear to have potential outliers, indiacting the presence of intermediate zones with unusually high susceptibility.
 
 # Formal Analysis
 
