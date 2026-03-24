@@ -75,4 +75,99 @@ In @fig-boxplot we observe a clear change in average measles susceptibility betw
 
 # Formal Analysis
 
+To investigate whether the change in measles susceptibility occurred specifically in 2004 alongside the retraction of the Wakefield article, we fitted a grouped binomial logistic regression model. This approach is appropriate because, for each intermediate zone and year, the data record the number of susceptible pre-school children *Y* out of the total number of pre-school children *N*. Therefore, the response is naturally binomial. To answer this question, the model included an overall time trend and a separate indicator for the year 2004. This allowed us to assess whether measles susceptibility in 2004 deviated from the general pattern observed over time.
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+
+library(dplyr)
+library(broom)
+library(gt)
+library(ggplot2)
+
+data <- read.csv("DAProject14.csv")
+
+formal_data <- data %>%
+  mutate(
+    prop = Y / N,
+    time = (Year - min(Year)) / 2,
+    year2004 = ifelse(Year == 2004, 1, 0)
+  )
+
+fit_q2 <- glm(
+  cbind(Y, N - Y) ~ time + year2004,
+  family = binomial,
+  data = formal_data
+)
+```
+
+Table @tbl-results presents the estimated odds ratios from the fitted model. The key parameter is the indicator for the year 2004, since this directly tests whether 2004 represented a distinct change point after accounting for the overall temporal trend in measles susceptibility.
+
+```{r}
+#| echo: false
+#| label: tbl-results
+#| tbl-cap: "Results from the grouped binomial logistic regression model"
+
+model_table <- tidy(fit_q2, conf.int = TRUE, exponentiate = TRUE) %>%
+  mutate(
+    term = c("(Intercept)", "Time trend", "Year 2004 indicator"),
+    estimate = round(estimate, 3),
+    conf.low = round(conf.low, 3),
+    conf.high = round(conf.high, 3),
+    p.value = ifelse(p.value < 0.001, "<0.001", sprintf("%.3f", p.value))
+  ) %>%
+  select(term, estimate, conf.low, conf.high, p.value) %>%
+  rename(
+    Term = term,
+    `Odds Ratio` = estimate,
+    `Lower 95% CI` = conf.low,
+    `Upper 95% CI` = conf.high,
+    `p-value` = p.value
+  )
+
+model_table %>%
+  gt()
+```
+
+The coefficient for the 2004 indicator was positive and highly statistically significant. The estimated odds ratio for the 2004 effect was 1.373 (95% CI: 1.296 to 1.454, 𝑝 \< 0.001). This indicates that, after accounting for the overall time trend, the odds of measles susceptibility in 2004 were substantially higher than would be expected from the broader temporal pattern alone. Therefore, the analysis provides strong evidence that the change in measles susceptibility occurred specifically in 2004, rather than being explained only by a gradual trend over time.
+
+The time trend was also statistically significant, with an estimated odds ratio of 0.906 (95% CI: 0.899 to 0.913, 𝑝 \< 0.001). This suggests that measles susceptibility generally declined over the study period. However, despite this overall downward trend, the significant positive 2004 effect indicates that 2004 represented a distinct short-term increase in susceptibility.
+
+```{r}
+#| echo: false
+#| label: fig-fitted
+#| fig-cap: "Observed and fitted measles susceptibility by year"
+#| out-width: "80%"
+
+formal_data$fitted_prob <- predict(fit_q2, type = "response")
+
+obs_year <- formal_data %>%
+  group_by(Year) %>%
+  summarise(observed = sum(Y) / sum(N), .groups = "drop")
+
+fit_year <- formal_data %>%
+  group_by(Year) %>%
+  summarise(fitted = weighted.mean(fitted_prob, w = N), .groups = "drop")
+
+plot_data <- left_join(obs_year, fit_year, by = "Year")
+
+ggplot(plot_data, aes(x = Year)) +
+  geom_point(aes(y = observed), size = 2) +
+  geom_line(aes(y = observed), linewidth = 0.8) +
+  geom_line(aes(y = fitted), linetype = "dashed", linewidth = 0.8) +
+  geom_vline(xintercept = 2004, linetype = "dotted", colour = "red") +
+  labs(
+    x = "Year",
+    y = "Proportion susceptible",
+    caption = "Points and solid line show observed proportions; dashed line shows fitted values from the model."
+  ) +
+  theme_minimal()
+```
+
+Figure @fig-fitted compares the observed yearly proportions with the fitted values from the model. The fitted values capture the overall decline in measles susceptibility over time, while also indicating a distinct upward deviation in 2004 relative to the long-term trend. This visual pattern is consistent with the regression results and supports the conclusion that 2004 was a distinct year in terms of measles susceptibility.
+
+Overall, there is strong statistical evidence that 2004 represented a distinct deviation from the overall temporal trend. After accounting for the general decline in measles susceptibility over time, the odds of susceptibility in 2004 remained significantly higher than expected. This suggests that the change in measles susceptibility occurred specifically in 2004, consistent with the timing of the retraction of the Wakefield article.
+
 # Conclusions
