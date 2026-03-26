@@ -1,5 +1,5 @@
 ---
-title: "Group_14_Analysis"
+title: "Group 14: Measles susceptibility in Edinburgh"
 format: html
 editor: visual
 execute: 
