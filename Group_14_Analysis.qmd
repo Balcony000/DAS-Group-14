@@ -1,6 +1,6 @@
 ---
 title: "Group 14: Measles susceptibility in Edinburgh"
-format: pdf
+format: html
 editor: visual
 execute: 
   eval: true
@@ -111,7 +111,7 @@ $log(p_i/1-p_i)= \beta_0+\beta_1 Time +\beta_2 Post + \beta_3 (Time \cdot Post)$
 
 This model allows us to estimate:
 
--   $\beta_2$ : the pre-2004 trend
+-   $\beta_1$ : the pre-2004 trend
 
 -   $\beta_2$ : the immediate level change in susceptibility in 2004
 
@@ -157,10 +157,11 @@ These results indicate:
 
 This pattern suggests that while the retraction did not cause an abrupt shift, it was associated with a meaningful change in the direction or rate of change of susceptibility in subsequent years.
 
-To support interpretation, we plotted both the observed proportions and the model‑based predicted values over time.
+To support interpretation, @fig-obs-vs-pre we plotted both the observed proportions and the model‑based predicted values over time.
 
 ```{r}
 #| out-width: "65%"
+#| label: fig-obs-vs-pre
 ggplot(data, aes(x = Year)) +
   geom_point(aes(y = prop), alpha = 0.4, colour = "grey40") +
   geom_line(aes(y = predicted), colour = "blue", linewidth = 1) +
@@ -174,10 +175,11 @@ ggplot(data, aes(x = Year)) +
   theme_minimal()
 ```
 
-A second plot compares pre and post 2004 linear trends.
+@fig-pre-vs-post below compares pre and post 2004 linear trends.
 
 ```{r}
 #| out-width: "65%"
+#| label: fig-pre-vs-post
 ggplot(data, aes(x = Time, y = prop, colour = factor(Post))) +
   geom_point(alpha = 0.4) +
   geom_smooth(method = "lm", se = TRUE) +

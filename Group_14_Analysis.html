@@ -1,0 +1,1167 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Group 14: Measles susceptibility in Edinburgh</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="Group_14_Analysis_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Group_14_Analysis_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="Group_14_Analysis_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="Group_14_Analysis_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="Group_14_Analysis_files/libs/quarto-html/popper.min.js"></script>
+<script src="Group_14_Analysis_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Group_14_Analysis_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Group_14_Analysis_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Group_14_Analysis_files/libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Group_14_Analysis_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Group_14_Analysis_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Group_14_Analysis_files/libs/bootstrap/bootstrap-9e3ffae467580fdb927a41352e75a2e0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="fullcontent quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Group 14: Measles susceptibility in Edinburgh</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<p>Measles is highly infectious and are easily spread throughout communities, vaccinations are key to limit the spread of measles. Population susceptibility is a key indicator of outbreak risks. In this study, the proportion of pre-school children who are susceptible to measles is analysed across intermediate zones.</p>
+<p>Our data set consists of 101 intermediate zones (IZ) from Edinburgh. The IZ have on average 4,000 residents and the data is from 1998-2014. The data set also includes the number of pre-school children susceptible to measles in a given IZ and the total number of pre-schooled children in a given IZ.</p>
+<p>Public concern regarding the measles, mumps and rubella (MMR) vaccine increased following the claims with links to autism, most notably in the Wakefield study. These claims were later dismissed and the Wakefield article was retracted in 2004.</p>
+<p>We have two main questions of interest, including, did the retraction of the Wakefield article exhibit any change in measles susceptibility in Edinburgh. Also did the change, if there was any, occur in 2004 alongside the article’s retraction.</p>
+</section>
+<section id="exploratory-analysis" class="level1">
+<h1>Exploratory Analysis</h1>
+<p>In the exploratory analysis we will put the data into two groups, pre-2004 and post-2004, this allows for an initial assessment of the impact of the retraction of the Wakefield article on measles susceptibility across IZ.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-plot" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="Group_14_Analysis_files/figure-html/fig-plot-1.png" class="img-fluid figure-img" style="width:65.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Average Proprotion of Measle Susceptibility against Year
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><a href="#fig-plot" class="quarto-xref">Figure&nbsp;1</a> shows the proportion of the average measles susceptibility across all IZ for each year, we can see a large decrease in 2004 when the Wakefield article was retracted. After 2004 we see an exponential decrease in the average proportion of measles susceptibility untill our latest time point in 2014. 2004 had the largest value at 0.175 but we see this decrease each time period to eventually being just above 0.075 in 2014.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-boxplot" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-boxplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="Group_14_Analysis_files/figure-html/fig-boxplot-1.png" class="img-fluid figure-img" style="width:65.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-boxplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Boxplots for average measle susceptibility post and pre wakefield articlr retraction
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>In <a href="#fig-boxplot" class="quarto-xref">Figure&nbsp;2</a> we observe a clear change in average measles susceptibility between the two groups. Following 2004, the median susceptibility appears lower compared to the pre 2004 period, suggesting a decrease after the retraction of the Wakefield article. Variability appears similar between both groups whilst both groups appear to have potential outliers, indiacting the presence of intermediate zones with unusually high susceptibility.</p>
+</section>
+<section id="formal-analysis" class="level1">
+<h1>Formal Analysis</h1>
+<p>Before modelling, several new variables were created to encode the structure of the interrupted time series:</p>
+<ul>
+<li><p>Post: an indicator variable equal to 1 for years after or including 2004 and 0 otherwise.<br>
+This captures any immediate level change in susceptibility at the point of retraction.</p></li>
+<li><p>Time: a continuous time variable centred at 2004 (Year − 2004).<br>
+This represents the underlying trend before the retraction.</p></li>
+<li><p>Interaction: the product of Time and Post.<br>
+This term allows the slope after 2004 to differ from the slope before 2004, capturing a change in trend rather than just a jump.</p></li>
+<li><p>Prop: the observed proportion susceptible (Y / N).<br>
+This is used only for plotting and descriptive summaries; the model uses the binomial counts.</p>
+<p>To evaluate changes in susceptibility, we fitted a binomial generalised linear model of the form:</p></li>
+</ul>
+<p><span class="math inline">\(Y_i ~ Binomial (N_i,p_i)\)</span></p>
+<p><span class="math inline">\(log(p_i/1-p_i)= \beta_0+\beta_1 Time +\beta_2 Post + \beta_3 (Time \cdot Post)\)</span></p>
+<p>This model allows us to estimate:</p>
+<ul>
+<li><p><span class="math inline">\(\beta_1\)</span> : the pre-2004 trend</p></li>
+<li><p><span class="math inline">\(\beta_2\)</span> : the immediate level change in susceptibility in 2004</p></li>
+<li><p><span class="math inline">\(\beta_3\)</span> : the change in trend (slope) after 2004</p></li>
+</ul>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm(formula = cbind(Y, N - Y) ~ Time + Post + Interaction, family = binomial, 
+    data = data)
+
+Coefficients:
+             Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept) -1.635141   0.042514 -38.461   &lt;2e-16 ***
+Time         0.015172   0.009823   1.545    0.122    
+Post         0.062356   0.047323   1.318    0.188    
+Interaction -0.111520   0.010507 -10.614   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 1768.26  on 908  degrees of freedom
+Residual deviance:  805.34  on 905  degrees of freedom
+AIC: 4583.4
+
+Number of Fisher Scoring iterations: 4</code></pre>
+</div>
+</div>
+<p>Coefficient estimates and 95% confidence intervals were extracted to aid interpretation.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>               Estimate        2.5 %      97.5 %
+(Intercept) -1.63514090 -1.718775847 -1.55211764
+Time         0.01517201 -0.004081481  0.03442634
+Post         0.06235633 -0.030179000  0.15533007
+Interaction -0.11151986 -0.132115355 -0.09092715</code></pre>
+</div>
+</div>
+<p>These results indicate:</p>
+<ul>
+<li><p>Time (pre‑2004 trend): not statistically significant, suggesting susceptibility was relatively stable before the retraction.</p></li>
+<li><p>Post (level change in 2004): not statistically significant, indicating no immediate jump in susceptibility at the point of retraction.</p></li>
+<li><p>Interaction (change in slope post‑2004): highly significant (p &lt; 0.001), indicating a substantial change in the trend of susceptibility after 2004.</p></li>
+</ul>
+<p>This pattern suggests that while the retraction did not cause an abrupt shift, it was associated with a meaningful change in the direction or rate of change of susceptibility in subsequent years.</p>
+<p>To support interpretation, <a href="#fig-obs-vs-pre" class="quarto-xref">Figure&nbsp;3</a> we plotted both the observed proportions and the model‑based predicted values over time.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-obs-vs-pre" class="quarto-float quarto-figure quarto-figure-center anchored" width="65%">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-obs-vs-pre-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="Group_14_Analysis_files/figure-html/fig-obs-vs-pre-1.png" id="fig-obs-vs-pre" class="img-fluid figure-img" style="width:65.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-obs-vs-pre-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><a href="#fig-pre-vs-post" class="quarto-xref">Figure&nbsp;4</a> below compares pre and post 2004 linear trends.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-pre-vs-post" class="quarto-float quarto-figure quarto-figure-center anchored" width="65%">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pre-vs-post-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="Group_14_Analysis_files/figure-html/fig-pre-vs-post-1.png" id="fig-pre-vs-post" class="img-fluid figure-img" style="width:65.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-pre-vs-post-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The interrupted time‑series analysis provides strong evidence of a significant change in the trend of measles susceptibility following the 2004 retraction of the Wakefield article. Although there was no immediate level shift, the post‑2004 slope changed markedly, indicating that susceptibility evolved differently after the retraction. This suggests that the retraction may have influenced vaccination behaviour in Edinburgh, leading to a measurable shift in susceptibility patterns over time.</p>
+<p>To investigate whether the change in measles susceptibility occurred specifically in 2004 alongside the retraction of the Wakefield article, we fitted a grouped binomial logistic regression model. This approach is appropriate because, for each intermediate zone and year, the data record the number of susceptible pre-school children <em>Y</em> out of the total number of pre-school children <em>N</em>. Therefore, the response is naturally binomial. To answer this question, the model included an overall time trend and a separate indicator for the year 2004. This allowed us to assess whether measles susceptibility in 2004 deviated from the general pattern observed over time.</p>
+<p><a href="#tbl-results" class="quarto-xref">Table&nbsp;1</a> presents the estimated odds ratios from the fitted model. The key parameter is the indicator for the year 2004, since this directly tests whether 2004 represented a distinct change point after accounting for the overall temporal trend in measles susceptibility.</p>
+<div class="cell">
+<div id="tbl-results" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-results-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Results from the grouped binomial logistic regression model
+</figcaption>
+<div aria-describedby="tbl-results-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<div id="tdfgklimar" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#tdfgklimar table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#tdfgklimar thead, #tdfgklimar tbody, #tdfgklimar tfoot, #tdfgklimar tr, #tdfgklimar td, #tdfgklimar th {
+  border-style: none;
+}
+
+#tdfgklimar p {
+  margin: 0;
+  padding: 0;
+}
+
+#tdfgklimar .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#tdfgklimar .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#tdfgklimar .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#tdfgklimar .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#tdfgklimar .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#tdfgklimar .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#tdfgklimar .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#tdfgklimar .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#tdfgklimar .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#tdfgklimar .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#tdfgklimar .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#tdfgklimar .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#tdfgklimar .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#tdfgklimar .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#tdfgklimar .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#tdfgklimar .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#tdfgklimar .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#tdfgklimar .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#tdfgklimar .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#tdfgklimar .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#tdfgklimar .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#tdfgklimar .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#tdfgklimar .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#tdfgklimar .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#tdfgklimar .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#tdfgklimar .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#tdfgklimar .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#tdfgklimar .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#tdfgklimar .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#tdfgklimar .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#tdfgklimar .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#tdfgklimar .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#tdfgklimar .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#tdfgklimar .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#tdfgklimar .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#tdfgklimar .gt_left {
+  text-align: left;
+}
+
+#tdfgklimar .gt_center {
+  text-align: center;
+}
+
+#tdfgklimar .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#tdfgklimar .gt_font_normal {
+  font-weight: normal;
+}
+
+#tdfgklimar .gt_font_bold {
+  font-weight: bold;
+}
+
+#tdfgklimar .gt_font_italic {
+  font-style: italic;
+}
+
+#tdfgklimar .gt_super {
+  font-size: 65%;
+}
+
+#tdfgklimar .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#tdfgklimar .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#tdfgklimar .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#tdfgklimar .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#tdfgklimar .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#tdfgklimar .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#tdfgklimar .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#tdfgklimar .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#tdfgklimar div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+
+<table class="gt_table do-not-create-environment cell caption-top table table-sm table-striped small" data-quarto-bootstrap="false">
+<thead>
+<tr class="gt_col_headings header">
+<th id="Term" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Term</th>
+<th id="Odds-Ratio" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Odds Ratio</th>
+<th id="Lower-95%-CI" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Lower 95% CI</th>
+<th id="Upper-95%-CI" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Upper 95% CI</th>
+<th id="p-value" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">p-value</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_left" headers="Term">(Intercept)</td>
+<td class="gt_row gt_right" headers="Odds Ratio">0.207</td>
+<td class="gt_row gt_right" headers="Lower 95% CI">0.200</td>
+<td class="gt_row gt_right" headers="Upper 95% CI">0.214</td>
+<td class="gt_row gt_left" headers="p-value">&lt;0.001</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Term">Time trend</td>
+<td class="gt_row gt_right" headers="Odds Ratio">0.906</td>
+<td class="gt_row gt_right" headers="Lower 95% CI">0.899</td>
+<td class="gt_row gt_right" headers="Upper 95% CI">0.913</td>
+<td class="gt_row gt_left" headers="p-value">&lt;0.001</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Term">Year 2004 indicator</td>
+<td class="gt_row gt_right" headers="Odds Ratio">1.373</td>
+<td class="gt_row gt_right" headers="Lower 95% CI">1.296</td>
+<td class="gt_row gt_right" headers="Upper 95% CI">1.454</td>
+<td class="gt_row gt_left" headers="p-value">&lt;0.001</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>The coefficient for the 2004 indicator was positive and highly statistically significant. The estimated odds ratio for the 2004 effect was 1.373 (95% CI: 1.296 to 1.454, 𝑝 &lt; 0.001). This indicates that, after accounting for the overall time trend, the odds of measles susceptibility in 2004 were substantially higher than would be expected from the broader temporal pattern alone. Therefore, the analysis provides evidence that measles susceptibility in 2004 was higher than would be expected from the broader temporal trend alone, suggesting a short-term deviation around that year.</p>
+<p>The time trend was also statistically significant, with an estimated odds ratio of 0.906 (95% CI: 0.899 to 0.913, 𝑝 &lt; 0.001). This suggests that measles susceptibility generally declined over the study period. However, despite this overall downward trend, the significant positive 2004 effect indicates that 2004 represented a distinct short-term increase in susceptibility.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-fitted" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-fitted-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="Group_14_Analysis_files/figure-html/fig-fitted-1.png" class="img-fluid figure-img" style="width:65.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fitted-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Observed and fitted measles susceptibility by year
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><a href="#fig-fitted" class="quarto-xref">Figure&nbsp;5</a> compares the observed yearly proportions with the fitted values from the model. The fitted values capture the overall decline in measles susceptibility over time, while also indicating a distinct upward deviation in 2004 relative to the long-term trend. This visual pattern is consistent with 2004 appearing as a distinct high point relative to the longer-term decline in susceptibility.</p>
+<p>Overall, there is strong statistical evidence that 2004 deviated from the overall temporal trend in measles susceptibility. After accounting for the general decline over time, the odds of susceptibility in 2004 remained significantly higher than expected. This suggests that 2004 was associated with a short-term increase in susceptibility, consistent with the timing of the retraction of the Wakefield article, although the broader post-2004 change may be better characterised as a change in trend rather than an immediate permanent shift.</p>
+</section>
+<section id="conclusions" class="level1">
+<h1>Conclusions</h1>
+<p>The exploratory analysis showed a noticeable difference between the periods pre and post 2004, with lower average susceptibility observed after 2004. The grouped binomial logistic regression model showed a significant declining trend in measles susceptibility over time. After this trend, the indicator for year 2004 remained statistically significant, with the odds ratio greater than 1. This indicates that measles susceptibility in 2004 was higher than expected based on the general trend.</p>
+<p>Overall, the findings provide strong evidence that year 2004 represents a clear deviation from the long term trend, indicating that the change in susceptibility occurred specifically in that year rather than as part of a gradual decline. In addition, the analysis suggests that the pattern of change after 2004 is better described as a shift in the trend, rather than an immediate level change. This pattern is consistent with the timing of the Wakefield article retraction.</p>
+<p>There are several limitations to this study: The analysis is observational and cannot establish definite causality between the Wakefield article retraction and the changes in susceptibility. The results should be interpreted with caution. Other unmeasured factors (such as policy, public health campaigns) may also have contributed to the observed trend.</p>
+<p>Future work could extend this analysis by incorporating additional covariates, such as economic status and basic vaccination coverage, and by applying more flexible models to better analyze potential trends and effects.</p>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
