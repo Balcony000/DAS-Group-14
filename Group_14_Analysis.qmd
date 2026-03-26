@@ -37,7 +37,7 @@ library(ggplot2)
 ```{r}
 #| fig-cap: "Average Proprotion of Measle Susceptibility against Year"
 #| label: fig-plot
-#| out-width: "80%"
+#| out-width: "65%"
 
 data <- read.csv("DAProject14.csv")
 data$prop <- data$Y / data$N
@@ -58,7 +58,7 @@ ggplot(yearly_avg, aes(x = Year, y = prop)) +
 ```{r}
 #| fig-cap: "Boxplots for average measle susceptibility post and pre wakefield articlr retraction"
 #| label: fig-boxplot
-#| out-width: "80%"
+#| out-width: "65%"
 
 data$period <- ifelse(data$Year > 2004 ,"Post-Wakefield Retraction", "Pre-Wakefield Retraction")
 
@@ -74,6 +74,127 @@ ggplot(data, aes(x = period, y = prop, fill = period)) +
 In @fig-boxplot we observe a clear change in average measles susceptibility between the two groups. Following 2004, the median susceptibility appears lower compared to the pre 2004 period, suggesting a decrease after the retraction of the Wakefield article. Variability appears similar between both groups whilst both groups appear to have potential outliers, indiacting the presence of intermediate zones with unusually high susceptibility.
 
 # Formal Analysis
+
+Before modelling, several new variables were created to encode the structure of the interrupted time series:
+
+-   Post: an indicator variable equal to 1 for years after or including 2004 and 0 otherwise.\
+    This captures any immediate level change in susceptibility at the point of retraction.
+
+-   Time: a continuous time variable centred at 2004 (Year − 2004).\
+    This represents the underlying trend before the retraction.
+
+-   Interaction: the product of Time and Post.\
+    This term allows the slope after 2004 to differ from the slope before 2004, capturing a change in trend rather than just a jump.
+
+-   Prop: the observed proportion susceptible (Y / N).\
+    This is used only for plotting and descriptive summaries; the model uses the binomial counts.
+
+    ```{r}
+    #| warning: false
+    #| message: false
+    #| echo: false
+    library(dplyr)
+    data <- data %>%
+      mutate(
+        Post = if_else(Year >= 2004, 1, 0),
+        Time = Year - 2004,
+        Interaction = Time * Post,
+        prop = Y / N
+      )
+    ```
+
+    To evaluate changes in susceptibility, we fitted a binomial generalised linear model of the form:
+
+$Y_i ~ Binomial (N_i,p_i)$
+
+$log(p_i/1-p_i)= \beta_0+\beta_1 Time +\beta_2 Post + \beta_3 (Time \cdot Post)$
+
+This model allows us to estimate:
+
+-   $\beta_2$ : the pre-2004 trend
+
+-   $\beta_2$ : the immediate level change in susceptibility in 2004
+
+-   $\beta_3$ : the change in trend (slope) after 2004
+
+```{r}
+#| warning: false
+#| message: false
+#| echo: false
+
+
+model_glm <- glm(
+  cbind(Y, N - Y) ~ Time + Post + Interaction,
+  data = data,
+  family = binomial
+)
+
+coef_table <- cbind(
+  Estimate = coef(model_glm),
+  confint(model_glm)
+)
+
+data$predicted <- predict(model_glm, type = "response")
+```
+
+```{r}
+summary(model_glm) 
+```
+
+Coefficient estimates and 95% confidence intervals were extracted to aid interpretation.
+
+```{r}
+coef_table
+```
+
+These results indicate:
+
+-   Time (pre‑2004 trend): not statistically significant, suggesting susceptibility was relatively stable before the retraction.
+
+-   Post (level change in 2004): not statistically significant, indicating no immediate jump in susceptibility at the point of retraction.
+
+-   Interaction (change in slope post‑2004): highly significant (p \< 0.001), indicating a substantial change in the trend of susceptibility after 2004.
+
+This pattern suggests that while the retraction did not cause an abrupt shift, it was associated with a meaningful change in the direction or rate of change of susceptibility in subsequent years.
+
+To support interpretation, we plotted both the observed proportions and the model‑based predicted values over time.
+
+```{r}
+#| out-width: "65%"
+ggplot(data, aes(x = Year)) +
+  geom_point(aes(y = prop), alpha = 0.4, colour = "grey40") +
+  geom_line(aes(y = predicted), colour = "blue", linewidth = 1) +
+  geom_vline(xintercept = 2004, linetype = "dashed", colour = "red") +
+  labs(
+    title = "Observed and Predicted Measles Susceptibility",
+    subtitle = "Dashed line marks the 2004 Wakefield Retraction",
+    y = "Proportion Susceptible",
+    x = "Year"
+  ) +
+  theme_minimal()
+```
+
+A second plot compares pre and post 2004 linear trends.
+
+```{r}
+#| out-width: "65%"
+ggplot(data, aes(x = Time, y = prop, colour = factor(Post))) +
+  geom_point(alpha = 0.4) +
+  geom_smooth(method = "lm", se = TRUE) +
+  scale_colour_manual(
+    values = c("0" = "blue", "1" = "red"),
+    labels = c("Pre‑2004", "Post‑2004")
+  ) +
+  labs(
+    title = "Pre vs Post 2004 Trends in Measles Susceptibility",
+    x = "Years Since 2004",
+    y = "Proportion Susceptible",
+    colour = "Period"
+  ) +
+  theme_minimal()
+```
+
+The interrupted time‑series analysis provides strong evidence of a significant change in the trend of measles susceptibility following the 2004 retraction of the Wakefield article. Although there was no immediate level shift, the post‑2004 slope changed markedly, indicating that susceptibility evolved differently after the retraction. This suggests that the retraction may have influenced vaccination behaviour in Edinburgh, leading to a measurable shift in susceptibility patterns over time.
 
 To investigate whether the change in measles susceptibility occurred specifically in 2004 alongside the retraction of the Wakefield article, we fitted a grouped binomial logistic regression model. This approach is appropriate because, for each intermediate zone and year, the data record the number of susceptible pre-school children *Y* out of the total number of pre-school children *N*. Therefore, the response is naturally binomial. To answer this question, the model included an overall time trend and a separate indicator for the year 2004. This allowed us to assess whether measles susceptibility in 2004 deviated from the general pattern observed over time.
 
@@ -103,7 +224,7 @@ fit_q2 <- glm(
 )
 ```
 
-Table @tbl-results presents the estimated odds ratios from the fitted model. The key parameter is the indicator for the year 2004, since this directly tests whether 2004 represented a distinct change point after accounting for the overall temporal trend in measles susceptibility.
+@tbl-results presents the estimated odds ratios from the fitted model. The key parameter is the indicator for the year 2004, since this directly tests whether 2004 represented a distinct change point after accounting for the overall temporal trend in measles susceptibility.
 
 ```{r}
 #| echo: false
@@ -131,7 +252,7 @@ model_table %>%
   gt()
 ```
 
-The coefficient for the 2004 indicator was positive and highly statistically significant. The estimated odds ratio for the 2004 effect was 1.373 (95% CI: 1.296 to 1.454, 𝑝 \< 0.001). This indicates that, after accounting for the overall time trend, the odds of measles susceptibility in 2004 were substantially higher than would be expected from the broader temporal pattern alone. Therefore, the analysis provides strong evidence that the change in measles susceptibility occurred specifically in 2004, rather than being explained only by a gradual trend over time.
+The coefficient for the 2004 indicator was positive and highly statistically significant. The estimated odds ratio for the 2004 effect was 1.373 (95% CI: 1.296 to 1.454, 𝑝 \< 0.001). This indicates that, after accounting for the overall time trend, the odds of measles susceptibility in 2004 were substantially higher than would be expected from the broader temporal pattern alone. Therefore, the analysis provides evidence that measles susceptibility in 2004 was higher than would be expected from the broader temporal trend alone, suggesting a short-term deviation around that year.
 
 The time trend was also statistically significant, with an estimated odds ratio of 0.906 (95% CI: 0.899 to 0.913, 𝑝 \< 0.001). This suggests that measles susceptibility generally declined over the study period. However, despite this overall downward trend, the significant positive 2004 effect indicates that 2004 represented a distinct short-term increase in susceptibility.
 
@@ -139,7 +260,8 @@ The time trend was also statistically significant, with an estimated odds ratio 
 #| echo: false
 #| label: fig-fitted
 #| fig-cap: "Observed and fitted measles susceptibility by year"
-#| out-width: "80%"
+#| out-width: "65%"
+
 
 formal_data$fitted_prob <- predict(fit_q2, type = "response")
 
@@ -166,8 +288,16 @@ ggplot(plot_data, aes(x = Year)) +
   theme_minimal()
 ```
 
-Figure @fig-fitted compares the observed yearly proportions with the fitted values from the model. The fitted values capture the overall decline in measles susceptibility over time, while also indicating a distinct upward deviation in 2004 relative to the long-term trend. This visual pattern is consistent with the regression results and supports the conclusion that 2004 was a distinct year in terms of measles susceptibility.
+@fig-fitted compares the observed yearly proportions with the fitted values from the model. The fitted values capture the overall decline in measles susceptibility over time, while also indicating a distinct upward deviation in 2004 relative to the long-term trend. This visual pattern is consistent with 2004 appearing as a distinct high point relative to the longer-term decline in susceptibility.
 
-Overall, there is strong statistical evidence that 2004 represented a distinct deviation from the overall temporal trend. After accounting for the general decline in measles susceptibility over time, the odds of susceptibility in 2004 remained significantly higher than expected. This suggests that the change in measles susceptibility occurred specifically in 2004, consistent with the timing of the retraction of the Wakefield article.
+Overall, there is strong statistical evidence that 2004 deviated from the overall temporal trend in measles susceptibility. After accounting for the general decline over time, the odds of susceptibility in 2004 remained significantly higher than expected. This suggests that 2004 was associated with a short-term increase in susceptibility, consistent with the timing of the retraction of the Wakefield article, although the broader post-2004 change may be better characterised as a change in trend rather than an immediate permanent shift.
 
 # Conclusions
+
+The exploratory analysis showed a noticeable difference between the periods pre and post 2004, with lower average susceptibility observed after 2004. The grouped binomial logistic regression model showed a significant declining trend in measles susceptibility overtime. After this trend, the indicator for year 2004 remained statistically significant, with the odds ratio greater than 1. This indicates that measles susceptibility in 2004 was higher than expected based on the general trend.
+
+Overall, the findings provide strong evidence that year 2004 represents a clear deviation from the long term trend, indicating that the change in susceptibility occurred specifically in that year rather than the gradual decline. This pattern is consistent with the timing of the retraction.
+
+There's several limitations to this study: The analysis is observational and cannot establish definite causality between the Wakefield article retraction and the changes in susceptibility. The results should be interpreted with caution. Other unmeasured factors (such as policy, public health campaigns) may also have contributed to the observed trend.
+
+Future work could extend this analysis by incorporating additional covariates, such as economic status and basic vaccination coverage, and by applying more flexible models to better analyze potential trends and effects.
