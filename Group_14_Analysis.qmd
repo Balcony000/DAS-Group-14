@@ -161,6 +161,7 @@ To support interpretation, @fig-obs-vs-pre we plotted both the observed proporti
 
 ```{r}
 #| out-width: "65%"
+#| fig-cap: "Observed and Predicted Measles Susceptibility"
 #| label: fig-obs-vs-pre
 ggplot(data, aes(x = Year)) +
   geom_point(aes(y = prop), alpha = 0.4, colour = "grey40") +
@@ -179,6 +180,7 @@ ggplot(data, aes(x = Year)) +
 
 ```{r}
 #| out-width: "65%"
+#| fig-cap: "Pre vs Post 2004 Trends in Measles Susceptibility"
 #| label: fig-pre-vs-post
 ggplot(data, aes(x = Time, y = prop, colour = factor(Post))) +
   geom_point(alpha = 0.4) +
